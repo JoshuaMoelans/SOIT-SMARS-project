@@ -7,10 +7,20 @@
   margin-right: 10px;
   margin-top: 10px;
 }
+body{
+  margin: 0;
+  padding: 0;
+}
+.blockBoxBar{
+  background-image: linear-gradient(lightblue, lightblue);
+  background-size: 150px;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: left center;
+}
 
 .blockBox{
   margin-left: 15px;
-  margin-top: 30px;
   vertical-align: middle;
 }
 
