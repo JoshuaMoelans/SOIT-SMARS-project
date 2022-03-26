@@ -1,0 +1,25 @@
+.itemSidebar{
+  width: 50px;
+  height: 50px;
+}
+
+.blueBox{
+    background-color: darkslateblue;
+}
+
+.greenBar{
+  width: 100px;
+  background-color: forestgreen;
+}
+
+.itemcloneblueBox {
+  width: 50px;
+  height: 50px;
+  background-color: cornflowerblue;
+}
+
+.itemclonegreenBar{
+  width: 100px;
+  height: 50px;
+  background-color: lightgreen;
+}
