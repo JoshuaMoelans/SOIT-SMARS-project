@@ -1,21 +1,45 @@
+.cornerLogo{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10%;
+  pointer-events: none;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.blockBox{
+  margin-left: 15px;
+  margin-top: 30px;
+  vertical-align: middle;
+}
+
 .itemSidebar{
   width: 50px;
   height: 50px;
+}
+
+.blockText{
+  font-family: "Josefin Sans", sans-serif;
+  user-select: none;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 5px;
 }
 
 .blueBox{
     background-color: darkslateblue;
 }
 
-.greenBar{
-  width: 100px;
-  background-color: forestgreen;
-}
-
 .itemcloneblueBox {
   width: 50px;
   height: 50px;
   background-color: cornflowerblue;
+}
+
+.greenBar{
+  width: 100px;
+  background-color: forestgreen;
 }
 
 .itemclonegreenBar{
