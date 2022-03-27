@@ -7,6 +7,7 @@ function onDragStart(event){
         .currentTarget
         .style
         .backgroundColor = "yellow"
+    let newElement = this.cloneNode(true)
 }
 
 function onDragEnd(event){

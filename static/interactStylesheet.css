@@ -1,0 +1,71 @@
+.cornerLogo{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10%;
+  pointer-events: none;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+body{
+  padding: 0;
+  border: 0;
+  outline: 0;
+  margin: -8px 0px 0px 0px;
+  overflow-x:hidden;
+}
+.blockBoxBar{
+  background-image: linear-gradient(lightblue, lightblue);
+  background-size: 150px;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: left;
+  vertical-align: top;
+  position: relative;
+}
+
+
+.blockBR{
+  height: 50pt;
+  visibility: hidden;
+}
+
+.blockBox{
+  margin-left: 15px;
+}
+
+.itemSidebar{
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  margin-top: 10px;
+}
+
+.blockText{
+  font-family: "Josefin Sans", sans-serif;
+  user-select: none;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 7px;
+}
+
+.blueBox{
+    background-color: darkslateblue;
+}
+
+.itemcloneblueBox {
+  width: 50px;
+  height: 50px;
+  background-color: cornflowerblue;
+}
+
+.greenBar{
+  width: 100px;
+  background-color: forestgreen;
+}
+
+.itemclonegreenBar{
+  width: 100px;
+  height: 50px;
+  background-color: lightgreen;
+}
