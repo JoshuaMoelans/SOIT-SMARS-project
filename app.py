@@ -10,7 +10,8 @@ def blockPrototype():  # put application's code here
     return render_template('blockPrototype.html')
 
 
-# todo: fix routing to in-use format
+# TODO fix routing to in-use format
+# labels: back-end
 @app.route('/interactJS')
 def interactJS():
     return render_template('interactJS.html')
