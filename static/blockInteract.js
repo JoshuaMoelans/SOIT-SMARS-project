@@ -45,7 +45,6 @@ interact(".itemSidebar")
       const { offsetTop, offsetLeft } = currentTarget;
       position.x = offsetLeft;
       position.y = offsetTop;
-
       // If we are moving an already existing item, we need to make sure the position object has
       // the correct values before we start dragging it
     } else if (interaction.pointerIsDown && !interaction.interacting()) {
@@ -56,14 +55,20 @@ interact(".itemSidebar")
         position.y = Number(transform[2]);
       }
     }
-    // Deletion of object - only if itemclone
+    // Deletion of object - only if itemclone class is attached
     // todo: fix right-click after dragging; currently removes last moved block
     window.oncontextmenu = function (e) {
       if(currentTarget.className.search("itemclone") !== -1){
         currentTarget.remove()
       }
-      e.preventDefault()
+      e.preventDefault() // prevents drop-down menu for right-click
     }
     // Start the drag event
     interaction.start({ name: "drag" }, event.interactable, element);
+    // bounce back if trying to drop block outside screen width
+    // todo: fix bounce-back not working 100% of the time → drag back and forth gets you over the threshold
+    let w = element.getBoundingClientRect().width
+    if(position.x+w >= window.innerWidth){
+      position.x = window.innerWidth-w-5
+    }
   });
