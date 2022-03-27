@@ -1,6 +1,10 @@
 // This stores the position of the current item being dragged
 const position = { x: 0, y: 0 };
 
+// TODO blocks 'swapping' positions when dragging one after another
+// When moving two different blocks, dragging the second one seems to teleport it onto the first one's place.
+// labels: bug,front-end
+
 interact(".itemSidebar")
   .draggable({
     // By setting manualStart to true - we control the manualStart.
