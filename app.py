@@ -6,13 +6,6 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def blockPrototype():  # put application's code here
-    return render_template('blockPrototype.html')
-
-
-# TODO fix routing to in-use format
-# labels: back-end
-@app.route('/interactJS')
 def interactJS():
     return render_template('interactJS.html')
 
