@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, render_template
 import requests
 import json
+import random
 
 app = Flask(__name__)
 
@@ -11,4 +12,4 @@ def interactJS():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0',port=random.randint(2000, 9000))
