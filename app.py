@@ -1,5 +1,4 @@
-from flask import Flask, jsonify, request, render_template
-import requests
+from flask import Flask, jsonify, request, render_template, Response
 import json
 import random
 
