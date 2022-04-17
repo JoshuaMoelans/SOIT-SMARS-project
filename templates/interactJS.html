@@ -6,8 +6,9 @@
     <link rel="stylesheet" href="../static/interactStylesheet.css"/>
     <link rel="shortcut icon" href="../static/Images/Hujo-Smars-icon.png">
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="../static/blockInteract.js"></script>
-
+    {# including fonts    #}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Red+Hat+Mono:wght@300&display=swap" rel="stylesheet">
@@ -27,9 +28,12 @@
                     <div class="blockText"> Walk Forward </div>
                 </div>
             </div>
+            <div class="networkField" id="network">
+
+            </div>
         </div>
     </div>
    <img class="bottomCornerLogo" src="../static/Images/Download-icon.png" alt="Download Icon"
-        onclick="location.href='/getCodeOutput'">
+        onclick="downloadNetwork();location.href='/getCodeOutput'">
 </body>
 </html>

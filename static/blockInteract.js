@@ -1,9 +1,7 @@
-// This stores the position of the current item being dragged
-const position = { x: 0, y: 0 };
-
-// TODO blocks 'swapping' positions when dragging one after another
-// When moving two different blocks, dragging the second one seems to teleport it onto the first one's place.
-// labels: bug,front-end
+// This stores the position of all draggable (=cloned) items
+let positions = Array()
+// We keep track of the number of blocks
+let blockCounter = 0;
 
 interact(".itemSidebar")
   .draggable({
@@ -12,9 +10,13 @@ interact(".itemSidebar")
     manualStart: true,
     listeners: {
       move(event) {
-        position.x += event.dx;
-        position.y += event.dy;
-        event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
+        const {currentTarget,interaction} = event;
+        const itemID = currentTarget.id;
+        if(itemID){
+          positions[itemID].x += event.dx;
+          positions[itemID].y += event.dy;
+          event.target.style.transform = `translate(${positions[itemID].x}px, ${positions[itemID].y }px)`;
+        }
       }
     }
   })
@@ -41,22 +43,27 @@ interact(".itemSidebar")
       const container = document.querySelector(".container");
       container && container.appendChild(element);
       let parentType = currentTarget.className.split(" ")[1]
-      element.id = "newElem"
-      document.getElementById("newElem").className += " itemclone" + parentType;
-      element.id = ""
+      element.id = blockCounter.toString()
+      document.getElementById(blockCounter.toString()).className += " itemclone" + parentType;
+      // set new nodes to be children of network div
+      document.getElementById("network").appendChild(element)
+      blockCounter += 1
 
-
+      // Add new position in array
+      const position = {x:0,y:0}
       const { offsetTop, offsetLeft } = currentTarget;
       position.x = offsetLeft;
       position.y = offsetTop;
+      positions.push(position);
       // If we are moving an already existing item, we need to make sure the position object has
       // the correct values before we start dragging it
     } else if (interaction.pointerIsDown && !interaction.interacting()) {
       const regex = /translate\(([\d]+)px, ([\d]+)px\)/i;
       const transform = regex.exec(currentTarget.style.transform);
+      const itemID = currentTarget.id
       if (transform && transform.length > 1) {
-        position.x = Number(transform[1]);
-        position.y = Number(transform[2]);
+        positions[itemID].x = Number(transform[1]);
+        positions[itemID].y = Number(transform[2]);
       }
     }
     // Deletion of object - only if itemclone class is attached
@@ -69,10 +76,22 @@ interact(".itemSidebar")
     }
     // Start the drag event
     interaction.start({ name: "drag" }, event.interactable, element);
-    // bounce back if trying to drop block outside screen width
+    // Extra feature - bounce back if trying to drop block outside screen width
     // todo: fix bounce-back not working 100% of the time → drag back and forth gets you over the threshold
     let w = element.getBoundingClientRect().width
-    if(position.x+w >= window.innerWidth){
-      position.x = window.innerWidth-w-5
+    let itemID = element.id;
+    if(itemID){ // only if itemID exists; basic sidebar blocks do not have an id, and also have no position stored
+      const position = positions[itemID]
+      if(position.x+w >= window.innerWidth){
+          position.x = window.innerWidth-w-5
+      }
     }
   });
+
+function downloadNetwork(){
+  $('#network').find('div').each(function(){
+    var innerDivID = $(this).attr('id');
+    console.log($(this))
+  })
+
+}
