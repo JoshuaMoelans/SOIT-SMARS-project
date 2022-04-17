@@ -19,21 +19,22 @@
         <div class="container">
             <div class="blockBox">
                 <div class="itemSidebar blueBox">
-                    <div class="blockText"> Start Block </div>
+                    <div class="blockText">Start Block</div>
                 </div>
 
                 <hr class="blockBR" />
 
                 <div class="itemSidebar greenBar">
-                    <div class="blockText"> Walk Forward </div>
+                    <div class="blockText">Walk Forward</div>
                 </div>
             </div>
             <div class="networkField" id="network">
-
+                {#blocks dynamically get added here#}
             </div>
         </div>
     </div>
+
    <img class="bottomCornerLogo" src="../static/Images/Download-icon.png" alt="Download Icon"
-        onclick="downloadNetwork();location.href='/getCodeOutput'">
+        onclick="downloadNetwork()">
 </body>
 </html>

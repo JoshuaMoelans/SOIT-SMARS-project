@@ -89,9 +89,32 @@ interact(".itemSidebar")
   });
 
 function downloadNetwork(){
-  $('#network').find('div').each(function(){
-    var innerDivID = $(this).attr('id');
-    console.log($(this))
+  let startCounter = 0;
+  let startBlockID = null;
+  let network = {}
+  $('#network > div').each(function(){
+    const innerDivID = $(this).attr('id');
+    const innerDivClass = $(this).attr('class');
+    const blockStyle = innerDivClass.split(' ')[1];
+    const blockType = $(this).children()[0].innerHTML;
+    network[innerDivID] = ({id: innerDivID, type: blockType})
+    if(blockType === 'Start Block'){
+      startCounter += 1;
+      startBlockID = innerDivID;
+    }
   })
-
+  if(startCounter > 1){
+    alert('multiple start blocks!');
+    return
+  }else if(startCounter < 1){
+    alert('no start block found!');
+    return
+  }
+  let outString = ""
+  // for(const item of network){
+  //   outString += item.id + " " + item.type + "\n";
+  // }
+  $.post("/getCodeOutput",{
+    javascript_data: JSON.stringify(network)
+  })
 }

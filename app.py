@@ -12,14 +12,14 @@ def interactJS():
 
 # TODO add network information to file output dynamically
 # labels: back-end
-@app.route("/getCodeOutput")
+@app.route("/getCodeOutput", methods=['POST'])
 def getCodeOutput():
-    pyFile = 'if __name__ == \'__main__\': \n\tprint(\'Hello World!\')'
+    jsdata = request.form['javascript_data']
+    pyFile = f'if __name__ == \'__main__\': \n\tprint(\'{jsdata}\')'
     return Response(
         pyFile,
-        mimetype="text/csv",
-        headers={"Content-disposition":
-                     "attachment; filename=myCode.py"})
+        mimetype="text/plain",
+        headers={"Content-Type": "application/octet-stream", "Content-disposition": "attachment; filename=myCode.py"})
 
 
 if __name__ == '__main__':
