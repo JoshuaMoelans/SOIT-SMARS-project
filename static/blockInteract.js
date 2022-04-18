@@ -110,11 +110,23 @@ function downloadNetwork(){
     alert('no start block found!');
     return
   }
-  let outString = ""
-  // for(const item of network){
-  //   outString += item.id + " " + item.type + "\n";
-  // }
-  $.post("/getCodeOutput",{
-    javascript_data: JSON.stringify(network)
-  })
+  let data = generateFile(network)
+  downloadFile('myCode.py', data)
+}
+
+function generateFile(network){
+  let fileContent = ""
+  let data = JSON.stringify(network)
+  fileContent = `if __name__ == \'__main__\': \n\tprint(\'${data}\')`
+  return fileContent
+}
+
+function downloadFile(filename, content){
+  let element = document.createElement('a');
+  element.setAttribute('href','data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+  element.setAttribute('download',filename)
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
 }
