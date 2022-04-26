@@ -1,3 +1,6 @@
+/*
+* Logo and image stylings
+*/
 .cornerLogo{
   position: absolute;
   top: 0;
@@ -18,7 +21,7 @@ img:hover{
   margin-right: 20px;
   margin-bottom: 20px;
 }
-
+/* body styling*/
 body{
   padding: 0;
   border: 0;
@@ -26,8 +29,10 @@ body{
   margin: -8px 0px 0px 0px;
   overflow-x:hidden;
 }
+
+/* block bar*/
 .blockBoxBar{
-  background-image: linear-gradient(lightblue, lightblue);
+  background-image: linear-gradient(lightskyblue, lightblue);
   background-size: 150px;
   height: 100vh;
   background-repeat: no-repeat;
@@ -35,34 +40,62 @@ body{
   vertical-align: top;
   position: relative;
 }
-
-
+/* spacing inbetween blocks in side bar*/
 .blockBR{
   height: 50pt;
   visibility: hidden;
 }
-
+/* box holding the sidebar blocks*/
 .blockBox{
   margin-left: 15px;
 }
-
+/* base sidebar item style*/
 .itemSidebar{
   width: 50px;
   height: 50px;
   position: absolute;
   margin-top: 10px;
+  z-index: 1;
 }
-
+/* in-block text styling */
 .blockText{
   font-family: "Josefin Sans", sans-serif;
   user-select: none;
   font-size: 18px;
   text-align: center;
   margin-top: 7px;
+  color: white;
 }
 
+/* specific dropzone styling */
+.dropzone {
+  background-color: white;
+  border: dashed 2px transparent;
+  height: 50px;
+  transition: background-color 0.3s;
+  z-index: 0;
+}
+
+.drop-active {
+  border-color: #aaa;
+}
+
+.drop-target {
+  background-color: #29e;
+  border-color: #fff;
+  border-style: solid;
+}
+
+.drag-drop.can-drop {
+  color: #000;
+  background-color: #4e4;
+}
+/*
+    Specific block styling
+    ! Every block-type needs an itemclone{type} equivalent!
+*/
 .blueBox{
-    background-color: darkslateblue;
+    background-color: mediumslateblue;
 }
 
 .itemcloneblueBox {
@@ -73,7 +106,7 @@ body{
 
 .greenBar{
   width: 100px;
-  background-color: forestgreen;
+  background-color: green;
 }
 
 .itemclonegreenBar{

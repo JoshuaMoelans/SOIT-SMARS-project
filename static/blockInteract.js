@@ -42,11 +42,15 @@ interact(".itemSidebar")
       // Add the cloned object to the document
       const container = document.querySelector(".container");
       container && container.appendChild(element);
-      let parentType = currentTarget.className.split(" ")[1]
-      element.id = blockCounter.toString()
+      let parentType = currentTarget.className.split(" ")[1];
+      element.id = blockCounter.toString();
       document.getElementById(blockCounter.toString()).className += " itemclone" + parentType;
       // set new nodes to be children of network div
-      document.getElementById("network").appendChild(element)
+      document.getElementById("network").appendChild(element);
+      let dropzone = document.createElement('div');
+      dropzone.setAttribute('class','dropzone');
+      dropzone.setAttribute('id',`dropzone-${blockCounter}`)
+      element.appendChild(dropzone);
       blockCounter += 1
 
       // Add new position in array
@@ -68,6 +72,7 @@ interact(".itemSidebar")
     }
     // Deletion of object - only if itemclone class is attached
     // todo: fix right-click after dragging; currently removes last moved block
+    // TODO fix right-click removing absolutely everything
     window.oncontextmenu = function (e) {
       if(currentTarget.className.search("itemclone") !== -1){
         currentTarget.remove()
@@ -87,6 +92,49 @@ interact(".itemSidebar")
       }
     }
   });
+
+interact('.dropzone').dropzone({
+  // only accept elements matching this CSS selector
+  accept: '*',
+  // Require a 75% element overlap for a drop to be possible
+  overlap: 0.50,
+
+  // listen for drop related events:
+
+  ondropactivate: function (event) {
+    // add active dropzone feedback
+    event.target.classList.add('drop-active')
+  },
+  ondragenter: function (event) {
+    var draggableElement = event.relatedTarget
+    var dropzoneElement = event.target
+
+    // feedback the possibility of a drop
+    dropzoneElement.classList.add('drop-target')
+    draggableElement.classList.add('can-drop')
+  },
+  ondragleave: function (event) {
+    // remove the drop feedback style
+    event.target.classList.remove('drop-target')
+    event.relatedTarget.classList.remove('can-drop')
+  },
+  ondrop: function (event) {
+    console.log(event.target.id);
+    console.log(event.relatedTarget.id);
+    // sets parent of currently dropped block to be the dropzone's accompanying block
+    let newParentID = event.target.id.split('-')[1];
+    let newParent = document.getElementById(newParentID);
+    let draggedBlock = document.getElementById(event.relatedTarget.id);
+    newParent.appendChild(draggedBlock);
+    draggedBlock.style.transform = "translate(0px,33px)";
+  },
+  ondropdeactivate: function (event) {
+    // remove active dropzone feedback
+    // TODO remove block from parent node (move back to global network)
+    event.target.classList.remove('drop-active')
+    event.target.classList.remove('drop-target')
+  }
+})
 
 function downloadNetwork(){
   let startCounter = 0;
