@@ -69,11 +69,10 @@ body{
 
 /* specific dropzone styling */
 .dropzone {
-  background-color: white;
+  background-color: transparent;
   border: dashed 2px transparent;
   height: 50px;
   transition: background-color 0.3s;
-  z-index: 0;
 }
 
 .drop-active {
@@ -86,10 +85,6 @@ body{
   border-style: solid;
 }
 
-.drag-drop.can-drop {
-  color: #000;
-  background-color: #4e4;
-}
 /*
     Specific block styling
     ! Every block-type needs an itemclone{type} equivalent!

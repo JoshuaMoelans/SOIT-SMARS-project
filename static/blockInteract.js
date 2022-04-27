@@ -95,9 +95,9 @@ interact(".itemSidebar")
 
 interact('.dropzone').dropzone({
   // only accept elements matching this CSS selector
-  accept: '*',
-  // Require a 75% element overlap for a drop to be possible
-  overlap: 0.50,
+  accept: '.can-drop',
+  // Require a 50% element overlap for a drop to be possible
+  overlap: 0.25,
 
   // listen for drop related events:
 
@@ -116,21 +116,24 @@ interact('.dropzone').dropzone({
   ondragleave: function (event) {
     // remove the drop feedback style
     event.target.classList.remove('drop-target')
-    event.relatedTarget.classList.remove('can-drop')
+    let network = document.getElementById('network');
+    let draggedBlock = document.getElementById(event.relatedTarget.id);
+    network.appendChild(draggedBlock);
+    // TODO dragging block outside of currently dropped-in zone teleports it to the side
+    // Similar to issue #14, only now it happens on leaving dropzone after being placed
+    // labels: bug,front-end
   },
   ondrop: function (event) {
-    console.log(event.target.id);
-    console.log(event.relatedTarget.id);
     // sets parent of currently dropped block to be the dropzone's accompanying block
     let newParentID = event.target.id.split('-')[1];
     let newParent = document.getElementById(newParentID);
     let draggedBlock = document.getElementById(event.relatedTarget.id);
     newParent.appendChild(draggedBlock);
+    // snap block to parent
     draggedBlock.style.transform = "translate(0px,33px)";
   },
   ondropdeactivate: function (event) {
     // remove active dropzone feedback
-    // TODO remove block from parent node (move back to global network)
     event.target.classList.remove('drop-active')
     event.target.classList.remove('drop-target')
   }
