@@ -15,6 +15,9 @@ interact(".itemSidebar")
         if(itemID){
           positions[itemID].x += event.dx;
           positions[itemID].y += event.dy;
+          // console.log(itemID)
+          // console.log(event.target.style.transform)
+          // console.log(positions[itemID])
           event.target.style.transform = `translate(${positions[itemID].x}px, ${positions[itemID].y }px)`;
         }
       }
@@ -109,12 +112,20 @@ interact('.dropzone').dropzone({
     var draggableElement = event.relatedTarget
     var dropzoneElement = event.target
 
-    // feedback the possibility of a drop
-    dropzoneElement.classList.add('drop-target')
+    // feedback the possibility of a drop - only if not dropping in own dropzone!
+    let current = dropzoneElement
+    while(current !== document.getElementById('network')){
+      if(current === draggableElement){
+        return
+      }
+      current = current.parentElement;
+    }
     draggableElement.classList.add('can-drop')
+    dropzoneElement.classList.add('drop-target')
   },
   ondragleave: function (event) {
     // remove the drop feedback style
+    console.log('ondragleave')
     event.target.classList.remove('drop-target')
     let network = document.getElementById('network');
     let draggedBlock = document.getElementById(event.relatedTarget.id);
@@ -128,6 +139,14 @@ interact('.dropzone').dropzone({
     let newParentID = event.target.id.split('-')[1];
     let newParent = document.getElementById(newParentID);
     let draggedBlock = document.getElementById(event.relatedTarget.id);
+    // make sure we don't drop into itself or own child element
+    let current = newParent
+    while(current !== document.getElementById('network')){
+      if(current === draggedBlock){
+        return
+      }
+      current = current.parentElement
+    }
     newParent.appendChild(draggedBlock);
     // snap block to parent
     draggedBlock.style.transform = "translate(0px,33px)";
