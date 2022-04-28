@@ -125,14 +125,23 @@ interact('.dropzone').dropzone({
   },
   ondragleave: function (event) {
     // remove the drop feedback style
-    console.log('ondragleave')
-    event.target.classList.remove('drop-target')
     let network = document.getElementById('network');
     let draggedBlock = document.getElementById(event.relatedTarget.id);
+    if(event.target.parentElement === draggedBlock){
+      return
+    }
+    event.target.classList.remove('drop-target')
+    if(draggedBlock.parentElement !== network){
+      // prevent teleporting blocks as referenced in issues #14 and #20
+      // TODO smoother x-position transform
+      // when moving block outside of current drop-zone, it snaps to dropzone parent's X position
+      // already spend too much time on getting it close enough, so only implementing this if time allows for it
+      // tags: enhancement, front-end
+      draggedBlock.style.transform = event.target.parentElement.style.transform
+      positions[draggedBlock.id] = {...positions[event.target.parentElement.id]}
+      positions[draggedBlock.id].y += 50
+    }
     network.appendChild(draggedBlock);
-    // TODO dragging block outside of currently dropped-in zone teleports it to the side
-    // Similar to issue #14, only now it happens on leaving dropzone after being placed
-    // labels: bug,front-end
   },
   ondrop: function (event) {
     // sets parent of currently dropped block to be the dropzone's accompanying block
