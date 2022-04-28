@@ -50,10 +50,13 @@ interact(".itemSidebar")
       document.getElementById(blockCounter.toString()).className += " itemclone" + parentType;
       // set new nodes to be children of network div
       document.getElementById("network").appendChild(element);
-      let dropzone = document.createElement('div');
-      dropzone.setAttribute('class','dropzone');
-      dropzone.setAttribute('id',`dropzone-${blockCounter}`)
-      element.appendChild(dropzone);
+      // create dropzone if element allows for it - done via no-dropzone class
+      if(!(element.classList.contains('no-dropzone'))){
+        let dropzone = document.createElement('div');
+        dropzone.setAttribute('class','dropzone');
+        dropzone.setAttribute('id',`dropzone-${blockCounter}`)
+        element.appendChild(dropzone);
+      }
       blockCounter += 1
 
       // Add new position in array

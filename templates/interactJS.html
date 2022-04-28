@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="../static/blockInteract.js"></script>
-    {# including fonts    #}
+    {#    including fonts    #}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Red+Hat+Mono:wght@300&display=swap" rel="stylesheet">
@@ -23,9 +23,15 @@
                 </div>
 
                 <hr class="blockBR" />
-
+                {# can-drop class used for blocks that can be placed in dropzone#}
                 <div class="itemSidebar greenBar can-drop">
                     <div class="blockText">Walk Forward</div>
+                </div>
+
+                <hr class="blockBR"/>
+                {# no-dropzone class used for blocks that have no dropzone#}
+                <div class="itemSidebar yellowBar can-drop no-dropzone">
+                    <div class="blockText">End program</div>
                 </div>
             </div>
             <div class="networkField" id="network">
