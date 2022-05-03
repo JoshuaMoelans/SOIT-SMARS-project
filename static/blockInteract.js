@@ -108,7 +108,10 @@ interact('.dropzone').dropzone({
   // listen for drop related events:
 
   ondropactivate: function (event) {
-    // add active dropzone feedback
+    // add active dropzone feedback - only if dropzone not filled
+    if(event.target.classList.contains('dropzone-filled')){
+      return
+    }
     event.target.classList.add('drop-active')
   },
   ondragenter: function (event) {
@@ -122,6 +125,10 @@ interact('.dropzone').dropzone({
         return
       }
       current = current.parentElement;
+    }
+    // check if dropzone is filled already
+    if(dropzoneElement.classList.contains('dropzone-filled')){
+      return
     }
     draggableElement.classList.add('can-drop')
     dropzoneElement.classList.add('drop-target')
@@ -143,11 +150,15 @@ interact('.dropzone').dropzone({
       draggedBlock.style.transform = event.target.parentElement.style.transform
       positions[draggedBlock.id] = {...positions[event.target.parentElement.id]}
       positions[draggedBlock.id].y += 50
+      event.target.classList.remove('dropzone-filled')
     }
     network.appendChild(draggedBlock);
   },
   ondrop: function (event) {
     // sets parent of currently dropped block to be the dropzone's accompanying block
+    if(event.target.classList.contains('dropzone-filled')){
+      return
+    }
     let newParentID = event.target.id.split('-')[1];
     let newParent = document.getElementById(newParentID);
     let draggedBlock = document.getElementById(event.relatedTarget.id);
@@ -160,6 +171,7 @@ interact('.dropzone').dropzone({
       current = current.parentElement
     }
     newParent.appendChild(draggedBlock);
+    event.target.classList.add('dropzone-filled')
     // snap block to parent
     draggedBlock.style.transform = "translate(0px,33px)";
   },
