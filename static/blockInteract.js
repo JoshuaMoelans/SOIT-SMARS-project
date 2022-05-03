@@ -77,12 +77,22 @@ interact(".itemSidebar")
       }
     }
     // Deletion of object - only if itemclone class is attached
-    // todo: fix right-click after dragging; currently removes last moved block
-    // TODO fix right-click removing absolutely everything
     window.oncontextmenu = function (e) {
-      if(currentTarget.className.search("itemclone") !== -1){
-        currentTarget.remove()
+      let target = e.target
+      if(target.className === 'blockBoxBar'){ // prevent default behaviour when right-clicking canvas
+        e.preventDefault();
+        return;
       }
+      while(target.className.search('itemclone') === -1){ // search up until itemclone parent is found
+        if((target.classList.contains('container'))){ // or stop when container is reached (should not happen)
+          e.preventDefault();
+          return;
+        }
+        target = target.parentElement;
+      }
+      // remove dropzone-filled class tag from parent dropzone
+      target.parentElement.querySelector('.dropzone').classList.remove('dropzone-filled');
+      target.remove();
       e.preventDefault() // prevents drop-down menu for right-click
     }
     // Start the drag event
@@ -173,7 +183,7 @@ interact('.dropzone').dropzone({
     newParent.appendChild(draggedBlock);
     event.target.classList.add('dropzone-filled')
     // snap block to parent
-    draggedBlock.style.transform = "translate(0px,33px)";
+    draggedBlock.style.transform = "translate(0px,40px)";
   },
   ondropdeactivate: function (event) {
     // remove active dropzone feedback
