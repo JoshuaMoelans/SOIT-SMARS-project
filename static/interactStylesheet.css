@@ -58,6 +58,30 @@ body{
   z-index: 1;
   box-shadow: 5px 5px 24px -5px rgba(0,0,0,0.33);
 }
+/* input field styling */
+input {
+  position: relative;
+  display: block;
+  float: right;
+  margin: auto;
+  padding: 0;
+  top: 75%;
+  right: 30%;
+  width: 17px;
+  height:17px;
+  outline: none;
+  box-shadow: none;
+  background-color: white;
+  border: 0;
+  border-radius:3px;
+  text-align: center;
+}
+/* hides up-down arrows on number field input*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 /* in-block text styling */
 .blockText{
   font-family: "Josefin Sans", sans-serif;

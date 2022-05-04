@@ -57,6 +57,11 @@ interact(".itemSidebar")
         dropzone.setAttribute('id',`dropzone-${blockCounter}`)
         element.appendChild(dropzone);
       }
+      if(element.classList.contains('has-input')){
+        // enable input field for cloned block
+        let inField = element.querySelector('input');
+        inField.disabled = false;
+      }
       blockCounter += 1
 
       // Add new position in array
@@ -79,7 +84,8 @@ interact(".itemSidebar")
     // Deletion of object - only if itemclone class is attached
     window.oncontextmenu = function (e) {
       let target = e.target
-      if(target.className === 'blockBoxBar'){ // prevent default behaviour when right-clicking canvas
+      if(target.className === 'blockBoxBar' || target.classList.contains('dropzone')){
+        // prevent default behaviour when right-clicking canvas or dropzone
         e.preventDefault();
         return;
       }
