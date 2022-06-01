@@ -25,9 +25,21 @@
                 <hr class="blockBR" />
                 {# can-drop class used for blocks that can be placed in dropzone#}
                 <div class="itemSidebar greenBar can-drop">
-                    <div class="blockText">Walk Forward</div>
+                    <div class="blockText">Drive Forward</div>
                 </div>
 
+                <hr class="blockBR" />
+                {# can-drop class used for blocks that can be placed in dropzone#}
+                <div class="itemSidebar greenBar can-drop">
+                    <div class="blockText">Drive Backward</div>
+                </div>
+
+                <hr class="blockBR" />
+                {# input field for blocks that require additional input. Initially disabled  #}
+                <div class="itemSidebar greenBar can-drop has-input">
+                    <div class="blockText">Wait for sec<input type="number" id="delay" name="delay" placeholder="3" disabled>
+                    </div>
+                </div>
 
                 <hr class="blockBR" />
                 {# input field for blocks that require additional input. Initially disabled  #}
@@ -35,7 +47,6 @@
                     <div class="blockText">Set speed to<input type="number" id="speed" name="speed" placeholder="50" disabled>
                     </div>
                 </div>
-
 
                 <hr class="blockBR"/>
                 {# no-dropzone class used for blocks that have no dropzone#}

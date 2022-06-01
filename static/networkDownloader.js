@@ -40,22 +40,30 @@ function downloadNetwork(){
     alert('no start block found!');
   }else{
     let data = generateFile(startBlock);
-    downloadFile('myCode.py', data);
+    downloadFile('myCode.ino', data);
   }
 }
 
 function codeForBlock(block){
   switch (block.blockType) {
     case "Start Block":
-      return "\tprint('Start Block')"
-    case "Walk Forward":
-      return "\tprint('Walk Forward')"
+      return ""
+    case "Drive Forward":
+      return "  R_motor.run(FORWARD);\n" +
+          "  L_motor.run(FORWARD);"
+    case "Drive Backward":
+      return "  R_motor.run(BACKWARD);\n" +
+          "  L_motor.run(BACKWARD);"
     case "Set speed to":
       return `\tprint('Set speed to ${block.param}')`
+    case "Wait for sec":
+      return `\tdelay(${block.param*1000});`
     case "End program":
-      return "\tprint('End program')"
+      return "  R_motor.run(RELEASE);\n" +
+          "  L_motor.run(RELEASE); \n"+
+          "while(1){}"
     default:
-      return `\tprint('block ${block.blockType} not recognized')`
+      return `\t//block ${block.blockType} not recognized`
   }
 }
 
@@ -99,7 +107,16 @@ function networkToCode(startBlock){
 function generateFile(startBlock){
   let fileContent = ""
   let data = networkToCode(startBlock)
-  fileContent = `if __name__ == \'__main__\': \n${data}`
+  // necessary setup for any Arduino SMARS file
+  fileContent = "#include <AFMotor.h>\n" +
+      "\n" +
+      "AF_DCMotor R_motor(1);\n" +
+      "AF_DCMotor L_motor(2); \n" +
+      "void setup() {\n" +
+      "  R_motor.setSpeed(100);\n" +
+      "  L_motor.setSpeed(100);\n" +
+      "} \n" +
+      `void loop() {\n${data} \n }`
   return fileContent
 }
 
