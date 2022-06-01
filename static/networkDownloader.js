@@ -40,8 +40,20 @@ function downloadNetwork(){
     alert('no start block found!');
   }else{
     let data = generateFile(startBlock);
-    downloadFile('myCode.ino', data);
+    let datestring = generateDate();
+    downloadFile(`myCode${datestring}.ino`, data);
   }
+}
+
+function generateDate(){
+  let currentDate = new Date();
+  let outString = "" + currentDate.getFullYear()
+  outString += `${currentDate.getMonth()+1}`
+  outString += `${currentDate.getDay()}`
+  outString += `T${currentDate.getHours()}`
+  outString += `${currentDate.getMinutes()}`
+  outString += `${currentDate.getSeconds()}`
+  return outString
 }
 
 function codeForBlock(block){
