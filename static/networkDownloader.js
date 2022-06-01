@@ -131,8 +131,8 @@ function generateFile(startBlock){
       "AF_DCMotor R_motor(1);\n" +
       "AF_DCMotor L_motor(2); \n\n" +
       "void setup() {\n" +
-      "  R_motor.setSpeed(100);\n" +
-      "  L_motor.setSpeed(100);\n" +
+      "  R_motor.setSpeed(150);\n" +
+      "  L_motor.setSpeed(150);\n" +
       "} \n\n" +
       `void loop() {\n${data} \n }`
   return fileContent
