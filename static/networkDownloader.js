@@ -61,19 +61,25 @@ function codeForBlock(block){
     case "Start Block":
       return ""
     case "Drive Forward":
-      return "  R_motor.run(FORWARD);\n" +
-          "  L_motor.run(FORWARD);"
+      return "\tR_motor.run(FORWARD);\n" +
+          "\tL_motor.run(FORWARD);\n"
     case "Drive Backward":
-      return "  R_motor.run(BACKWARD);\n" +
-          "  L_motor.run(BACKWARD);"
+      return "\tR_motor.run(BACKWARD);\n" +
+          "\tL_motor.run(BACKWARD);\n"
     case "Set speed to":
-      return `\tprint('Set speed to ${block.param}')`
+      let speed = Math.min(block.param,255)
+      return `\tR_motor.setSpeed(${speed});\n`
+          +`\tL_motor.setSpeed(${speed});\n`
     case "Wait for sec":
-      return `\tdelay(${block.param*1000});`
+      let delay_seconds = block.param*1000
+      return `\tdelay(${delay_seconds});`
+    case "Stop both motors":
+      return "\tR_motor.run(RELEASE);\n" +
+          "\tL_motor.run(RELEASE); \n"
     case "End program":
-      return "  R_motor.run(RELEASE);\n" +
-          "  L_motor.run(RELEASE); \n"+
-          "while(1){}"
+      return "\tR_motor.run(RELEASE);\n" +
+          "\tL_motor.run(RELEASE); \n"+
+          "\twhile(1){}"
     default:
       return `\t//block ${block.blockType} not recognized`
   }
@@ -83,7 +89,7 @@ function codeForBlock(block){
   a list of all blocks which are expected to have parameters
   TODO document this well!!!
  */
-let ParamBlocks = ['Set speed to']
+let ParamBlocks = ['Set speed to','Wait for sec']
 
 function networkToCode(startBlock){
   let output = ""
@@ -123,11 +129,11 @@ function generateFile(startBlock){
   fileContent = "#include <AFMotor.h>\n" +
       "\n" +
       "AF_DCMotor R_motor(1);\n" +
-      "AF_DCMotor L_motor(2); \n" +
+      "AF_DCMotor L_motor(2); \n\n" +
       "void setup() {\n" +
       "  R_motor.setSpeed(100);\n" +
       "  L_motor.setSpeed(100);\n" +
-      "} \n" +
+      "} \n\n" +
       `void loop() {\n${data} \n }`
   return fileContent
 }
