@@ -49,6 +49,13 @@ interact(".itemSidebar")
       document.getElementById(blockCounter.toString()).className += " itemclone" + parentType;
       // set new nodes to be children of network div
       document.getElementById("network").appendChild(element);
+      // create control flow dropzone element if control-flow block
+      if(element.classList.contains('control-flow')){
+        let controlDropzone = document.createElement('div');
+        controlDropzone.setAttribute('class','dropzone control');
+        controlDropzone.setAttribute('id',`control-${blockCounter}`);
+        element.appendChild(controlDropzone);
+      }
       // create dropzone if element allows for it - done via no-dropzone class
       if(!(element.classList.contains('no-dropzone'))){
         let dropzone = document.createElement('div');
