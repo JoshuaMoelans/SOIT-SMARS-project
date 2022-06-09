@@ -54,6 +54,7 @@ interact(".itemSidebar")
         let controlDropzone = document.createElement('div');
         controlDropzone.setAttribute('class','dropzone control');
         controlDropzone.setAttribute('id',`control-${blockCounter}`);
+        controlDropzone.style.transform = `translate(25px,0px)`;
         element.appendChild(controlDropzone);
       }
       // create dropzone if element allows for it - done via no-dropzone class
@@ -195,9 +196,44 @@ interact('.dropzone').dropzone({
       current = current.parentElement
     }
     newParent.appendChild(draggedBlock);
-    event.target.classList.add('dropzone-filled')
+    event.target.classList.add('dropzone-filled');
     // snap block to parent position
-    draggedBlock.style.transform = "translate(0px,20px)";
+    let yVal = "20";
+    let xVal = "0";
+    let lowerDropzone = false;
+    let controlParentID = null;
+    // check if dropzone is a  child of control-flow block (example: Repeat)
+    if(newParent.classList.contains('control-flow')) {
+      if (!event.target.classList.contains("control")) { // if we're dropping under the control zone
+        let controlSize = $(`.in-control-${newParentID}`).length;
+        yVal = `${(controlSize + 2) * 25}`;
+      } else {
+        draggedBlock.classList.add(`flowBlock`);
+        draggedBlock.classList.add(`in-control-${newParentID}`);
+        xVal = "25";  // if we're dropping in the control zone there's a slight shift to the right
+        lowerDropzone = true;
+        controlParentID = newParentID;
+      }
+    }
+      // if dropzone is itself child of in-control block, dropped block must be in-control too
+      console.log(newParent.classList)
+      if(newParent.classList.contains(`flowBlock`)){
+        console.log('here')
+        let controlLine = newParent.classList[newParent.classList.length - 1]
+        draggedBlock.classList.add("flowBlock")
+        draggedBlock.classList.add(controlLine);
+        controlParentID = controlLine.split('-')[2]
+        lowerDropzone = true;
+      }
+      // if parent of target element is in-control, we want to move the control-flow parent's dropzone by 20px
+      if (lowerDropzone) {
+        let underControlDropZone = document.getElementById(`dropzone-${controlParentID}`);
+        let controlGroup = $(`.in-control-${controlParentID}`);
+        let controlSize = controlGroup.length
+        console.log(controlSize)
+        underControlDropZone.style.transform = `translate(0px,${25 * controlSize}px)`;
+      }
+    draggedBlock.style.transform = `translate(${xVal}px,${yVal}px)`;
   },
   ondropdeactivate: function (event) {
     // remove active dropzone feedback
