@@ -33,7 +33,7 @@ body{
 /* block bar*/
 .blockBoxBar{
   background-image: linear-gradient(lightskyblue, lightblue);
-  background-size: 150px;
+  background-size: 200px;
   height: 100vh;
   background-repeat: no-repeat;
   background-position: left;
@@ -51,8 +51,8 @@ body{
 }
 /* base sidebar item style*/
 .itemSidebar{
-  width: 50px;
-  height: 50px;
+  width: 150px;
+  height: 30px;
   position: absolute;
   margin-top: 10px;
   z-index: 1;
@@ -61,16 +61,10 @@ body{
 /* input field styling */
 input {
   position: relative;
-  display: block;
-  float: right;
-  margin: 0 0 0 12px ;
-  padding: 0;
-  top: 75%;
-  right: 30%;
+  margin-left: 5px;
   width: 25px;
-  height:17px;
+  height:16px;
   outline: none;
-  box-shadow: none;
   background-color: white;
   border: 0;
   border-radius:3px;
@@ -91,8 +85,9 @@ input[type=number] {
   font-family: "Josefin Sans", sans-serif;
   user-select: none;
   font-size: 18px;
-  text-align: center;
+  text-align: left;
   margin-top: 7px;
+  margin-left: 5px;
   color: white;
 }
 
@@ -127,7 +122,6 @@ input[type=number] {
 }
 
 .greenBar{
-  width: 100px;
   background-color: green;
 }
 
@@ -136,17 +130,14 @@ input[type=number] {
 }
 
 .orangeBar{
-  width: 100px;
   background-color: #F8882B;
 }
 
 .itemcloneorangeBar{
-  width: 100px;
   background-color: #FDAD6B;
 }
 
 .yellowBar{
-  width: 100px;
   background-color: #ffdf00;
 }
 

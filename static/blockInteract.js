@@ -27,7 +27,6 @@ interact(".itemSidebar")
   .on("move", function(event) {
     const { currentTarget, interaction } = event;
     let element = currentTarget;
-
     // If we are dragging an item from the sidebar, its transform value will be ''
     // We need to clone it, and then start moving the clone
     if (
@@ -102,6 +101,8 @@ interact(".itemSidebar")
       e.preventDefault() // prevents drop-down menu for right-click
     }
     // Start the drag event
+    // TODO make drag event only start when interacting with block instead of allowing dropzone too
+    //  tags: front-end, enhancement
     interaction.start({ name: "drag" }, event.interactable, element);
     // Extra feature - bounce back if trying to drop block outside screen width
     // todo: fix bounce-back not working 100% of the time → drag back and forth gets you over the threshold
@@ -188,8 +189,8 @@ interact('.dropzone').dropzone({
     }
     newParent.appendChild(draggedBlock);
     event.target.classList.add('dropzone-filled')
-    // snap block to parent
-    draggedBlock.style.transform = "translate(0px,40px)";
+    // snap block to parent position
+    draggedBlock.style.transform = "translate(0px,20px)";
   },
   ondropdeactivate: function (event) {
     // remove active dropzone feedback
