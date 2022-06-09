@@ -17,14 +17,20 @@ class ParamBlockHolder extends BlockHolder{
     this.paramType = typeof(param);
   }
 }
+
+class ControlBlockHolder extends ParamBlockHolder{
+    constructor(divID,divClass,blockType,param,flownet) {
+    super(divID,divClass,blockType);
+    this.param = param;
+    this.flownet = flownet;
+  }
+}
 /*
   Functions to download the network by generating a code file
  */
 function downloadNetwork(){
   let startCounter = 0;
-  let endFound = false;
   let startBlockID = null;
-  let startBlock = null;
   $('#network > div').each(function(){
     const innerDivID = $(this).attr('id');
     const innerDivClass = $(this).attr('class');
@@ -32,7 +38,6 @@ function downloadNetwork(){
     if(blockType === 'Start'){
       startCounter += 1;
       startBlockID = innerDivID;
-      startBlock = new BlockHolder(innerDivID,innerDivClass,blockType)
     }
   })
   if(startCounter > 1){
@@ -40,7 +45,7 @@ function downloadNetwork(){
   }else if(startCounter < 1){
     alert('no start block found!');
   }else{
-    let data = generateFile(startBlock);
+    let data = generateFile(startBlockID);
     let datestring = generateDate();
     downloadFile(`myCode${datestring}.ino`, data);
   }
@@ -57,7 +62,7 @@ function generateDate(){
   return outString
 }
 
-function codeForBlock(block){
+function codeForBlock(block,flownetcode=""){
   switch (block.blockType) {
     case "Start":
       return ""
@@ -79,7 +84,7 @@ function codeForBlock(block){
           "\tL_motor.run(RELEASE); \n"
     case "Repeat":
       let repeat_times = block.param;
-      return `// repeating ${repeat_times} times\n`;
+      return `\tfor(int i = 0; i<${repeat_times}; i++){\n\n${flownetcode}\n\t}\n`;
     case "End":
       return "\tR_motor.run(RELEASE);\n" +
           "\tL_motor.run(RELEASE); \n"+
@@ -95,13 +100,11 @@ function codeForBlock(block){
  */
 let ParamBlocks = ['Set speed to','Wait for sec']
 let ControlBlocks = ['Repeat']
-function networkToCode(startBlock){
-  let output = ""
-  let network = [startBlock]
-  let currentBlock = document.getElementById(startBlock.divID)
+function generateNetwork(startBlockID){
+  let network = []
+  let currentBlock = document.getElementById(startBlockID)
   // we loop until we find an unfilled dropzone (or end-block which has no dropzone)
-  while(currentBlock.querySelector(".dropzone-filled")){
-    currentBlock = currentBlock.lastChild
+  while(currentBlock.lastChild){
     const innerDivID = $(currentBlock).attr('id');
     const innerDivClass = $(currentBlock).attr('class');
     const blockType = $(currentBlock).children()[0].innerText;
@@ -114,28 +117,59 @@ function networkToCode(startBlock){
       if(!isNaN(param)){
         param = parseInt(param)
       }
-      network.push(new ParamBlockHolder(innerDivID,innerDivClass,blockType,param))
+      if(ControlBlocks.includes(blockType)){
+        // we generate the flow-network
+        let flownet = generateNetwork(currentBlock.querySelector('.flowBlock').id);
+        network.push(new ControlBlockHolder(innerDivID,innerDivClass,blockType,param,flownet));
+      }else{
+        network.push(new ParamBlockHolder(innerDivID,innerDivClass,blockType,param));
+      }
     }else{
       network.push(new BlockHolder(innerDivID,innerDivClass,blockType))
     }
+    currentBlock = currentBlock.lastChild;
+    // we can stop if we reach the END node (which has a last child node without further children elements
+    if(currentBlock.childNodes.length === 0){
+      break
+    }else if(currentBlock.classList.contains('flowBlock')){ // or if we end on an opened flow
+      break
+    }
   }
+  return network
+}
+function networkToCode(startBlockID){
+  let output = ""
+  // generate the network
+  let network = generateNetwork(startBlockID)
   // for each added network block we generate the code
-  let endFound = false;
+  let endBlock = null;
   for(let block of network){
     if(block.blockType === "End"){
-      endFound = true;
+      endBlock = block;
+    }else if(ControlBlocks.includes(block.blockType)){
+      // special case if control flow block
+      let flownetcode = "";
+      // we first generate the code for our sub-network in the control flow
+      for(let flowblock of block.flownet){
+        flownetcode += codeForBlock(flowblock);
+      }
+      // and then generate our code given the block and the flownetcode
+      output += codeForBlock(block,flownetcode) + "\n";
+    }else{
+      output += codeForBlock(block) + "\n"
     }
-    output += codeForBlock(block) + "\n"
   }
-  if(! endFound){
+  if(endBlock == null){
     alert('End block not found; code stack will loop infinitely')
+  }else{
+    output += codeForBlock(endBlock) + "\n"
   }
   return output
 }
 
-function generateFile(startBlock){
+function generateFile(startBlockID){
   let fileContent = ""
-  let data = networkToCode(startBlock)
+  let data = networkToCode(startBlockID)
   // necessary setup for any Arduino SMARS file
   fileContent = "#include <AFMotor.h>\n" +
       "\n" +
