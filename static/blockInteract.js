@@ -54,7 +54,7 @@ interact(".itemSidebar")
         let controlDropzone = document.createElement('div');
         controlDropzone.setAttribute('class','dropzone control');
         controlDropzone.setAttribute('id',`control-${blockCounter}`);
-        controlDropzone.style.transform = `translate(25px,0px)`;
+        controlDropzone.style.transform = `translate(30px,0px)`;
         element.appendChild(controlDropzone);
       }
       // create dropzone if element allows for it - done via no-dropzone class
@@ -216,7 +216,7 @@ interact('.dropzone').dropzone({
     if(newParent.classList.contains('control-flow')) {
       if (!event.target.classList.contains("control")) { // if we're dropping under the control zone
         let controlSize = $(`.in-control-${newParentID}`).length;
-        yVal = `${(controlSize + 2) * 25}`;
+        yVal = `${(controlSize + 2) * 30}`;
       } else {
         draggedBlock.classList.add(`flowBlock`);
         draggedBlock.classList.add(`in-control-${newParentID}`);
@@ -250,6 +250,7 @@ function updateDropZone(controlFlowID){
       let underControlDropZone = document.getElementById(`dropzone-${controlFlowID}`);
       let controlGroup = $(`.in-control-${controlFlowID}`);
       let controlSize = controlGroup.length
-      underControlDropZone.style.transform = `translate(0px,${25 * controlSize}px)`;
+      underControlDropZone.style.transform = `translate(0px,${30*controlSize}px)`;
+      underControlDropZone.parentElement.style.height = `${30*(1+controlSize)}px`;
       // TODO move all existing children of dropzone up/down when updated
 }

@@ -100,7 +100,7 @@ function codeForBlock(block,flownetcode=""){
  */
 let ParamBlocks = ['Set speed to','Wait for sec']
 let ControlBlocks = ['Repeat']
-function generateNetwork(startBlockID){
+function generateNetwork(startBlockID, inflow = false){
   let network = []
   let currentBlock = document.getElementById(startBlockID)
   // we loop until we find an unfilled dropzone (or end-block which has no dropzone)
@@ -119,7 +119,7 @@ function generateNetwork(startBlockID){
       }
       if(ControlBlocks.includes(blockType)){
         // we generate the flow-network
-        let flownet = generateNetwork(currentBlock.querySelector('.flowBlock').id);
+        let flownet = generateNetwork(currentBlock.querySelector('.flowBlock').id,true);
         network.push(new ControlBlockHolder(innerDivID,innerDivClass,blockType,param,flownet));
       }else{
         network.push(new ParamBlockHolder(innerDivID,innerDivClass,blockType,param));
@@ -131,7 +131,7 @@ function generateNetwork(startBlockID){
     // we can stop if we reach the END node (which has a last child node without further children elements
     if(currentBlock.childNodes.length === 0){
       break
-    }else if(currentBlock.classList.contains('flowBlock')){ // or if we end on an opened flow
+    }else if(currentBlock.classList.contains('flowBlock') && !inflow){ // or if we end on an opened flow
       break
     }
   }
