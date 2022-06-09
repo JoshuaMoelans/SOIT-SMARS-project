@@ -22,13 +22,14 @@ class ParamBlockHolder extends BlockHolder{
  */
 function downloadNetwork(){
   let startCounter = 0;
+  let endFound = false;
   let startBlockID = null;
   let startBlock = null;
   $('#network > div').each(function(){
     const innerDivID = $(this).attr('id');
     const innerDivClass = $(this).attr('class');
     const blockType = $(this).children()[0].innerHTML;
-    if(blockType === 'Start Block'){
+    if(blockType === 'Start'){
       startCounter += 1;
       startBlockID = innerDivID;
       startBlock = new BlockHolder(innerDivID,innerDivClass,blockType)
@@ -58,7 +59,7 @@ function generateDate(){
 
 function codeForBlock(block){
   switch (block.blockType) {
-    case "Start Block":
+    case "Start":
       return ""
     case "Drive Forward":
       return "\tR_motor.run(FORWARD);\n" +
@@ -72,11 +73,14 @@ function codeForBlock(block){
           +`\tL_motor.setSpeed(${speed});\n`
     case "Wait for sec":
       let delay_seconds = block.param*1000
-      return `\tdelay(${delay_seconds});`
+      return `\tdelay(${delay_seconds});\n`
     case "Stop both motors":
       return "\tR_motor.run(RELEASE);\n" +
           "\tL_motor.run(RELEASE); \n"
-    case "End program":
+    case "Repeat":
+      let repeat_times = block.param;
+      return `// repeating ${repeat_times} times\n`;
+    case "End":
       return "\tR_motor.run(RELEASE);\n" +
           "\tL_motor.run(RELEASE); \n"+
           "\twhile(1){}"
@@ -90,7 +94,7 @@ function codeForBlock(block){
   TODO document this well!!!
  */
 let ParamBlocks = ['Set speed to','Wait for sec']
-
+let ControlBlocks = ['Repeat']
 function networkToCode(startBlock){
   let output = ""
   let network = [startBlock]
@@ -101,7 +105,7 @@ function networkToCode(startBlock){
     const innerDivID = $(currentBlock).attr('id');
     const innerDivClass = $(currentBlock).attr('class');
     const blockType = $(currentBlock).children()[0].innerText;
-    if(ParamBlocks.includes(blockType)){
+    if(ParamBlocks.includes(blockType) || ControlBlocks.includes(blockType)){
       let param = $(currentBlock).children()[0].children[0].value
       if(!param){ // if param field is not filled in, we use the placeholder default value
         param = $(currentBlock).children()[0].children[0].placeholder
@@ -116,8 +120,15 @@ function networkToCode(startBlock){
     }
   }
   // for each added network block we generate the code
+  let endFound = false;
   for(let block of network){
+    if(block.blockType === "End"){
+      endFound = true;
+    }
     output += codeForBlock(block) + "\n"
+  }
+  if(! endFound){
+    alert('End block not found; code stack will loop infinitely')
   }
   return output
 }

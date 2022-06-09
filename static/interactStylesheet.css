@@ -42,7 +42,11 @@ body{
 }
 /* spacing inbetween blocks in side bar*/
 .blockBR{
-  height: 50pt;
+  height: 25pt;
+  visibility: hidden;
+}
+.secBR{
+  height: 40pt;
   visibility: hidden;
 }
 /* box holding the sidebar blocks*/
@@ -91,6 +95,15 @@ input[type=number] {
   color: white;
 }
 
+.secText{
+  font-family: "Josefin Sans", sans-serif;
+  user-select: none;
+  font-size: 18px;
+  text-align: left;
+  color: darkslateblue;
+  text-shadow: 1px 1px 20px darkblue;
+}
+
 /* specific dropzone styling */
 .dropzone {
   background-color: transparent;
@@ -114,6 +127,7 @@ input[type=number] {
     ! Every block-type needs an itemclone{type} equivalent!
 */
 .blueBox{
+    width: 75px;
     background-color: mediumslateblue;
 }
 
@@ -137,10 +151,18 @@ input[type=number] {
   background-color: #FDAD6B;
 }
 
-.yellowBar{
+.yellowBox{
+  width: 75px;
   background-color: #ffdf00;
 }
 
-.itemcloneyellowBar{
+.itemcloneyellowBox{
   background-color: #f6e15f;
+}
+
+.purpleBar{
+  background-color: rebeccapurple;
+}
+.itemclonepurpleBar{
+  background-color: mediumpurple;
 }

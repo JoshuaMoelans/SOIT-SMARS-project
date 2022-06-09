@@ -18,46 +18,51 @@
     <div class="blockBoxBar">
         <div class="container">
             <div class="blockBox">
-                <div class="itemSidebar blueBox">
-                    <div class="blockText">Start Block</div>
+                <br>
+                <div class="secText">Events</div>
+                <div class="itemSidebar yellowBox">
+                    <div class="blockText">Start</div>
                 </div>
-
-                <hr class="blockBR" />
+                <hr class="blockBR">
+                {# no-dropzone class used for blocks that have no dropzone#}
+                <div class="itemSidebar yellowBox can-drop no-dropzone">
+                    <div class="blockText">End</div>
+                </div>
+                {# section breaks can be used for wider spacing between blocks #}
+                <hr class="secBR" />
+                {# and can have additional section Text #}
+                <div class="secText">Movement</div>
                 {# can-drop class used for blocks that can be placed in dropzone#}
                 <div class="itemSidebar greenBar can-drop">
                     <div class="blockText">Drive Forward</div>
                 </div>
-
                 <hr class="blockBR" />
                 {# can-drop class used for blocks that can be placed in dropzone#}
                 <div class="itemSidebar greenBar can-drop">
                     <div class="blockText">Drive Backward</div>
                 </div>
-
                 <hr class="blockBR" />
                 {# can-drop class used for blocks that can be placed in dropzone#}
                 <div class="itemSidebar greenBar can-drop">
                     <div class="blockText">Stop both motors</div>
                 </div>
-
-                <hr class="blockBR" />
+                <hr class="secBR" />
+                <div class="secText">Input field</div>
                 {# input field for blocks that require additional input. Initially disabled  #}
                 <div class="itemSidebar orangeBar can-drop has-input">
                     <div class="blockText">Wait for sec<input oninput="this.value=this.value.slice(0,this.maxLength)" maxlength="3" type="number" id="delay" name="delay" placeholder="3" disabled>
                     </div>
                 </div>
-
                 <hr class="blockBR" />
                 {# input field for blocks that require additional input. Initially disabled  #}
                 <div class="itemSidebar orangeBar can-drop has-input">
                     <div class="blockText">Set speed to<input oninput="this.value=this.value.slice(0,this.maxLength)"  maxlength="3" type="number" id="speed" name="speed" placeholder="50" disabled>
                     </div>
                 </div>
-
-                <hr class="blockBR"/>
-                {# no-dropzone class used for blocks that have no dropzone#}
-                <div class="itemSidebar yellowBar can-drop no-dropzone">
-                    <div class="blockText">End program</div>
+                <hr class="secBR"/>
+                <div class="secText">Control</div>
+                <div class="itemSidebar purpleBar can-drop">
+                    <div class="blockText">Repeat<input oninput="this.value=this.value.slice(0,this.maxLength)"  maxlength="3" type="number" id="repeat" name="repeat" placeholder="10" disabled></div>
                 </div>
             </div>
             <div class="networkField" id="network">
