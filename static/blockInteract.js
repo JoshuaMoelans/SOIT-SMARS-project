@@ -176,6 +176,16 @@ interact('.dropzone').dropzone({
       positions[draggedBlock.id] = {...positions[event.target.parentElement.id]}
       positions[draggedBlock.id].y += 50
       event.target.classList.remove('dropzone-filled')
+      // if block was part of a control flow network, we up the dropzone again
+      if(draggedBlock.classList.contains("flowBlock")){
+        let controlLine = draggedBlock.classList[draggedBlock.classList.length - 1];
+        let controlParentID = controlLine.split('-')[2];
+        // TODO remove flowblock and controlLine class from all children when moving it outside of dropzone of control flow
+        //  tags: front-end
+        draggedBlock.classList.remove("flowBlock");
+        draggedBlock.classList.remove(controlLine);
+        updateDropZone(controlParentID);
+      }
     }
     network.appendChild(draggedBlock);
   },
@@ -216,9 +226,7 @@ interact('.dropzone').dropzone({
       }
     }
       // if dropzone is itself child of in-control block, dropped block must be in-control too
-      console.log(newParent.classList)
       if(newParent.classList.contains(`flowBlock`)){
-        console.log('here')
         let controlLine = newParent.classList[newParent.classList.length - 1]
         draggedBlock.classList.add("flowBlock")
         draggedBlock.classList.add(controlLine);
@@ -227,11 +235,7 @@ interact('.dropzone').dropzone({
       }
       // if parent of target element is in-control, we want to move the control-flow parent's dropzone by 20px
       if (lowerDropzone) {
-        let underControlDropZone = document.getElementById(`dropzone-${controlParentID}`);
-        let controlGroup = $(`.in-control-${controlParentID}`);
-        let controlSize = controlGroup.length
-        console.log(controlSize)
-        underControlDropZone.style.transform = `translate(0px,${25 * controlSize}px)`;
+        updateDropZone(controlParentID)
       }
     draggedBlock.style.transform = `translate(${xVal}px,${yVal}px)`;
   },
@@ -241,3 +245,11 @@ interact('.dropzone').dropzone({
     event.target.classList.remove('drop-target')
   }
 })
+
+function updateDropZone(controlFlowID){
+      let underControlDropZone = document.getElementById(`dropzone-${controlFlowID}`);
+      let controlGroup = $(`.in-control-${controlFlowID}`);
+      let controlSize = controlGroup.length
+      underControlDropZone.style.transform = `translate(0px,${25 * controlSize}px)`;
+      // TODO move all existing children of dropzone up/down when updated
+}
