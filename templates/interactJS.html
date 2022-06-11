@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>interactJS prototype</title>
     <link rel="stylesheet" href="../static/interactStylesheet.css"/>
+    <link rel="stylesheet" href="../static/alerts.css"/>
     <link rel="shortcut icon" href="../static/Images/Hujo-Smars-icon.png">
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -73,6 +74,13 @@
 
    <img class="bottomCornerLogo" src="../static/Images/Download-icon.png" alt="Download Icon"
         onclick="downloadNetwork()">
+
+    <div class="alert hidden" id="alert">
+        <span class="closebtn" id="alertClose" onclick="this.parentElement.classList.add('hidden'); this.style.pointerEvents='none'">&times;</span>
+            <div id="alertbox">
+
+            </div>
+    </div>
     <script src="../static/networkDownloader.js"></script>
 </body>
 </html>

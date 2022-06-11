@@ -1,0 +1,42 @@
+/* The alert message box */
+.alert {
+  padding: 20px;
+  background-color: #f44336; /* Red - basic for errors*/
+  color: white;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 20px;
+  width: 250px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 20px;
+  margin-bottom: 7.5%;
+  border-radius: 25px;
+  box-shadow: 5px 5px 24px -5px rgba(0,0,0,0.33);
+  opacity: 1;
+  /* transition on opacity and bottom (move to bottom via .hidden css style )*/
+  transition: opacity 0.5s ease-out, margin-bottom 0.5s ease-out;
+}
+
+
+.hidden{
+  margin-bottom: 6%;
+  opacity: 0;
+}
+
+/* The close button */
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 50px;
+  line-height: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}

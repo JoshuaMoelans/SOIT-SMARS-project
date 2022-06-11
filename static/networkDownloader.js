@@ -40,14 +40,29 @@ function downloadNetwork(){
       startBlockID = innerDivID;
     }
   })
+
   if(startCounter > 1){
-    alert('multiple start blocks!');
+    setAlert("Too many start blocks");
   }else if(startCounter < 1){
-    alert('no start block found!');
+    setAlert("Missing a start block");
   }else{
     let data = generateFile(startBlockID);
     let datestring = generateDate();
     downloadFile(`myCode${datestring}.ino`, data);
+  }
+}
+
+function setAlert(text,type='error'){
+  let alertText = document.getElementById('alertbox');
+  let alertBox = document.getElementById('alert');
+  let alertClose = document.getElementById('alertClose');
+  alertBox.classList.remove('hidden');
+  alertClose.style.pointerEvents = "initial";
+  alertText.innerText = text
+  if(type === 'warning'){
+        alertBox.style.backgroundColor = "#f4be36"
+  }else if(type === 'error'){
+    alertBox.style.backgroundColor = "#f44336"
   }
 }
 
@@ -160,7 +175,7 @@ function networkToCode(startBlockID){
     }
   }
   if(endBlock == null){
-    alert('End block not found; code stack will loop infinitely')
+    setAlert('End block not found; code stack will loop infinitely',type='warning')
   }else{
     output += codeForBlock(endBlock) + "\n"
   }
