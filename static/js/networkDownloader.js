@@ -99,7 +99,8 @@ function codeForBlock(block,flownetcode=""){
           "\tL_motor.run(RELEASE); \n"
     case "Repeat":
       let repeat_times = block.param;
-      return `\tfor(int i = 0; i<${repeat_times}; i++){\n\n${flownetcode}\n\t}\n`;
+      let id = block.divID;
+      return `\tfor(int i${id} = 0; i${id}<${repeat_times}; i${id}++){\n\n${flownetcode}\n\t}\n`;
     case "End":
       return "\tR_motor.run(RELEASE);\n" +
           "\tL_motor.run(RELEASE); \n"+
@@ -134,8 +135,11 @@ function generateNetwork(startBlockID, inflow = false){
       }
       if(ControlBlocks.includes(blockType)){
         // we generate the flow-network
-        let flownet = generateNetwork(currentBlock.querySelector('.flowBlock').id,true);
-        network.push(new ControlBlockHolder(innerDivID,innerDivClass,blockType,param,flownet));
+        let s = currentBlock.querySelector('.flowBlock');
+        if(s !== null){
+          let flownet = generateNetwork(s.id,true);
+          network.push(new ControlBlockHolder(innerDivID,innerDivClass,blockType,param,flownet));
+        }
       }else{
         network.push(new ParamBlockHolder(innerDivID,innerDivClass,blockType,param));
       }

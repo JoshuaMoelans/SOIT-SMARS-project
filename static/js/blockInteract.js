@@ -2,6 +2,8 @@
 let positions = Array()
 // We keep track of the number of blocks
 let blockCounter = 0;
+// and we have a stack of trash
+let trash = [];
 
 interact(".itemSidebar")
   .draggable({
@@ -15,9 +17,6 @@ interact(".itemSidebar")
         if(itemID){
           positions[itemID].x += event.dx;
           positions[itemID].y += event.dy;
-          // console.log(itemID)
-          // console.log(event.target.style.transform)
-          // console.log(positions[itemID])
           event.target.style.transform = `translate(${positions[itemID].x}px, ${positions[itemID].y }px)`;
         }
       }
@@ -122,16 +121,40 @@ interact(".itemSidebar")
           position.x = window.innerWidth-w-5
       }
     }
+    // we store items to the bin for retrieval, when deleting on accident
+    let bin = document.getElementById("bin");
+    if(isCollide(bin,element)){
+      trash.push(element);
+      element.remove();
+    }
   });
 
+/**
+ * restores trash after click on undo button
+ * gets trash from stack (LiFo order) and puts it top left of the screen
+ */
+function restoreTrash(){
+  if(trash.length){
+    let retrieved = trash.pop()
+    document.getElementById("network").appendChild(retrieved);
+    retrieved.style.transform = "translate(250px,100px)";
+  }
+}
+
+/**
+ * dropzone interaction code
+ */
 interact('.dropzone').dropzone({
   // only accept elements matching this CSS selector
   accept: '.can-drop',
-  // Require a 50% element overlap for a drop to be possible
-  overlap: 0.25,
+  // Require a 15% element overlap for a drop to be possible
+  overlap: 0.15,
 
   // listen for drop related events:
-
+  /**
+   * when a drop in a dropzone happens; NOT if dropping outside of a dropzone!
+   * @param event
+   */
   ondropactivate: function (event) {
     // add active dropzone feedback - only if dropzone not filled
     if(event.target.classList.contains('dropzone-filled')){
@@ -158,6 +181,10 @@ interact('.dropzone').dropzone({
     draggableElement.classList.add('can-drop')
     dropzoneElement.classList.add('drop-target')
   },
+  /**
+   * when an element leaves the dropzone it was in, either after being part of the drop zone or just after hovering
+   * @param event
+   */
   ondragleave: function (event) {
     // TODO fix removing flow-in-flow nesting not properly updating the in-control class
     // remove the drop feedback style
@@ -197,6 +224,10 @@ interact('.dropzone').dropzone({
     }
     network.appendChild(draggedBlock);
   },
+  /**
+   * when element is dropped in a dropzone
+   * @param event
+   */
   ondrop: function (event) {
     // sets parent of currently dropped block to be the dropzone's accompanying block
     if(event.target.classList.contains('dropzone-filled')){
@@ -306,4 +337,23 @@ function updateChildrenControl(draggedBlock, controlLine,remove=true) {
       currentblock.classList.add('flowBlock');
     }
   }
+}
+
+/**
+ * simple collide check function
+ * retrieved from https://stackoverflow.com/questions/2440377/javascript-collision-detection
+ * @param a - first element for collision detection
+ * @param b - second element for collision detection
+ * @returns {boolean} - whether the two objects collide or not
+ */
+function isCollide(a, b) {
+    let aRect = a.getBoundingClientRect();
+    let bRect = b.getBoundingClientRect();
+
+    return !(
+        ((aRect.top + aRect.height) < (bRect.top)) ||
+        (aRect.top > (bRect.top + bRect.height)) ||
+        ((aRect.left + aRect.width) < bRect.left) ||
+        (aRect.left > (bRect.left + bRect.width))
+    );
 }

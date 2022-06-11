@@ -1,32 +1,9 @@
-/*
-* Logo and image stylings
-*/
-.cornerLogo{
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 10%;
-  pointer-events: none;
-  margin-right: 10px;
-  margin-top: 10px;
-}
-img:hover{
-  cursor:pointer;
-}
-.bottomCornerLogo{
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 5%;
-  margin-right: 20px;
-  margin-bottom: 20px;
-}
 /* body styling*/
 body{
   padding: 0;
   border: 0;
   outline: 0;
-  margin: -8px 0px 0px 0px;
+  margin: 0;
   overflow-x:hidden;
 }
 
@@ -156,6 +133,14 @@ input[type=number] {
 }
 
 .itemcloneyellowBox{
+  background-color: #f6e15f;
+}
+
+.yellowBar{
+  background-color: #ffdf00;
+}
+
+.itemcloneyellowBar{
   background-color: #f6e15f;
 }
 
