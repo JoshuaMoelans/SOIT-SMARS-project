@@ -159,6 +159,7 @@ interact('.dropzone').dropzone({
     dropzoneElement.classList.add('drop-target')
   },
   ondragleave: function (event) {
+    // TODO fix removing flow-in-flow nesting not properly updating the in-control class
     // remove the drop feedback style
     let network = document.getElementById('network');
     let draggedBlock = document.getElementById(event.relatedTarget.id);
@@ -215,7 +216,7 @@ interact('.dropzone').dropzone({
     newParent.appendChild(draggedBlock);
     event.target.classList.add('dropzone-filled');
     // snap block to parent position
-    let yVal = "20";
+    let yVal = "30";
     let xVal = "0";
     let lowerDropzone = false;
     let controlParentID = [];
@@ -227,9 +228,7 @@ interact('.dropzone').dropzone({
       } else {
         draggedBlock.classList.add(`flowBlock`);
         draggedBlock.classList.add(`in-control-${newParentID}`);
-        if(draggedBlock.classList.contains('control-flow')){
-          updateChildrenControl(draggedBlock,`in-control-${newParentID}`,false);
-        }
+        updateChildrenControl(draggedBlock,`in-control-${newParentID}`,false);
         xVal = "25";  // if we're dropping in the control zone there's a slight shift to the right
         lowerDropzone = true;
         controlParentID = [newParentID];
@@ -262,6 +261,11 @@ interact('.dropzone').dropzone({
   }
 })
 
+/**
+ * update the dropzone of the given control flow ID block by searching for all items in its control group
+ * and scaling the height accordingly
+ * @param controlFlowID - the ID of the control group block
+ */
 function updateDropZone(controlFlowID){
       let underControlDropZone = document.getElementById(`dropzone-${controlFlowID}`);
       let controlGroup = $(`.in-control-${controlFlowID}`);
@@ -276,7 +280,12 @@ function updateDropZone(controlFlowID){
       underControlDropZone.style.transform = `translate(0px,${30*controlSize}px)`;
       // and we set the height of the control flow element
       underControlDropZone.parentElement.style.height = `${30*(2+controlSize)}px`;
-      // TODO move all existing children of dropzone up/down when updated
+      let controlZoneChildren = underControlDropZone.parentElement.children;
+      for(let child of controlZoneChildren){
+        if(!child.classList.contains("flowBlock") && child.classList.contains("itemSidebar")){
+          child.style.transform = `translate(0px,${30*(2+controlSize)}px)`;
+        }
+      }
 }
 
 /**
