@@ -178,12 +178,20 @@ interact('.dropzone').dropzone({
       event.target.classList.remove('dropzone-filled')
       // if block was part of a control flow network, we up the dropzone again
       if(draggedBlock.classList.contains("flowBlock")){
+        let updateControlBlocks = []
         let controlLine = draggedBlock.classList[draggedBlock.classList.length - 1];
-        let controlParentID = controlLine.split('-')[2];
-        draggedBlock.classList.remove("flowBlock");
-        draggedBlock.classList.remove(controlLine);
-        updateChildrenControl(draggedBlock,controlLine);
-        updateDropZone(controlParentID);
+        let allClassNames = draggedBlock.className.split(' ')
+        for(let className of allClassNames){
+          if(className.includes('in-control-')){
+            draggedBlock.classList.remove("flowBlock")
+            draggedBlock.classList.remove(className);
+            updateControlBlocks.push(className.split('-')[2])
+            updateChildrenControl(draggedBlock,controlLine);
+          }
+        }
+        for(let id of updateControlBlocks){
+          updateDropZone(id);
+        }
       }
     }
     network.appendChild(draggedBlock);
@@ -210,32 +218,40 @@ interact('.dropzone').dropzone({
     let yVal = "20";
     let xVal = "0";
     let lowerDropzone = false;
-    let controlParentID = null;
+    let controlParentID = [];
     // check if dropzone is a  child of control-flow block (example: Repeat)
     if(newParent.classList.contains('control-flow')) {
       if (!event.target.classList.contains("control")) { // if we're dropping under the control zone
         let controlSize = $(`.in-control-${newParentID}`).length;
         yVal = `${(controlSize + 2) * 30}`;
       } else {
-        // TODO fix control-within-control nesting
         draggedBlock.classList.add(`flowBlock`);
         draggedBlock.classList.add(`in-control-${newParentID}`);
+        if(draggedBlock.classList.contains('control-flow')){
+          updateChildrenControl(draggedBlock,`in-control-${newParentID}`,false);
+        }
         xVal = "25";  // if we're dropping in the control zone there's a slight shift to the right
         lowerDropzone = true;
-        controlParentID = newParentID;
+        controlParentID = [newParentID];
       }
     }
       // if dropzone is itself child of in-control block, dropped block must be in-control too
       if(newParent.classList.contains(`flowBlock`)){
-        let controlLine = newParent.classList[newParent.classList.length - 1]
-        draggedBlock.classList.add("flowBlock")
-        draggedBlock.classList.add(controlLine);
-        controlParentID = controlLine.split('-')[2]
+        let allClassNames = newParent.className.split(' ');
+        for(let className of allClassNames){
+          if(className.includes('in-control-')){
+            draggedBlock.classList.add("flowBlock")
+            draggedBlock.classList.add(className);
+            controlParentID.push(className.split('-')[2])
+          }
+        }
         lowerDropzone = true;
       }
       // if parent of target element is in-control, we want to move the control-flow parent's dropzone by 20px
       if (lowerDropzone) {
-        updateDropZone(controlParentID)
+        for(let id of controlParentID){
+          updateDropZone(id)
+        }
       }
     draggedBlock.style.transform = `translate(${xVal}px,${yVal}px)`;
   },
@@ -249,7 +265,13 @@ interact('.dropzone').dropzone({
 function updateDropZone(controlFlowID){
       let underControlDropZone = document.getElementById(`dropzone-${controlFlowID}`);
       let controlGroup = $(`.in-control-${controlFlowID}`);
-      let controlSize = controlGroup.length;
+      let nestedFlowCount = 0;
+      controlGroup.each(function(i,obj){
+        if(obj.classList.contains('control-flow')){
+          nestedFlowCount += 1;
+        }
+      });
+      let controlSize = controlGroup.length + nestedFlowCount;
       // we move the dropzone according to the amount of items in the control-flow
       underControlDropZone.style.transform = `translate(0px,${30*controlSize}px)`;
       // and we set the height of the control flow element
@@ -258,15 +280,21 @@ function updateDropZone(controlFlowID){
 }
 
 /**
- * function that recursively updates children of dragged block to remove them from the control flow
- * @param draggedBlock - the initial block being dragged out of the control flow
- * @param controlLine - the control line class to remove from the children
+ * function that recursively updates children of dragged block to remove/add them from/to the control flow
+ * @param draggedBlock - the initial block being dragged into/out of the control flow
+ * @param controlLine - the control line class to remove/add from the children classlist
+ * @param remove - whether to remove or add the class
  */
-function updateChildrenControl(draggedBlock, controlLine) {
+function updateChildrenControl(draggedBlock, controlLine,remove=true) {
   let currentblock = draggedBlock;
   while(currentblock.lastChild.classList.contains('itemSidebar')){
     currentblock = currentblock.lastChild;
-    currentblock.classList.remove(controlLine);
-    currentblock.classList.remove('flowBlock');
+    if(remove){
+      currentblock.classList.remove(controlLine);
+      currentblock.classList.remove('flowBlock');
+    }else{
+      currentblock.classList.add(controlLine);
+      currentblock.classList.add('flowBlock');
+    }
   }
 }
