@@ -162,6 +162,7 @@ input[type=number] {
 
 .purpleBar{
   background-color: rebeccapurple;
+  height: 60px;
 }
 .itemclonepurpleBar{
   background-color: mediumpurple;

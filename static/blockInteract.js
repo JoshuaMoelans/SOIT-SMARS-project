@@ -180,10 +180,9 @@ interact('.dropzone').dropzone({
       if(draggedBlock.classList.contains("flowBlock")){
         let controlLine = draggedBlock.classList[draggedBlock.classList.length - 1];
         let controlParentID = controlLine.split('-')[2];
-        // TODO remove flowblock and controlLine class from all children when moving it outside of dropzone of control flow
-        //  tags: front-end
         draggedBlock.classList.remove("flowBlock");
         draggedBlock.classList.remove(controlLine);
+        updateChildrenControl(draggedBlock,controlLine);
         updateDropZone(controlParentID);
       }
     }
@@ -218,6 +217,7 @@ interact('.dropzone').dropzone({
         let controlSize = $(`.in-control-${newParentID}`).length;
         yVal = `${(controlSize + 2) * 30}`;
       } else {
+        // TODO fix control-within-control nesting
         draggedBlock.classList.add(`flowBlock`);
         draggedBlock.classList.add(`in-control-${newParentID}`);
         xVal = "25";  // if we're dropping in the control zone there's a slight shift to the right
@@ -249,8 +249,24 @@ interact('.dropzone').dropzone({
 function updateDropZone(controlFlowID){
       let underControlDropZone = document.getElementById(`dropzone-${controlFlowID}`);
       let controlGroup = $(`.in-control-${controlFlowID}`);
-      let controlSize = controlGroup.length
+      let controlSize = controlGroup.length;
+      // we move the dropzone according to the amount of items in the control-flow
       underControlDropZone.style.transform = `translate(0px,${30*controlSize}px)`;
-      underControlDropZone.parentElement.style.height = `${30*(1+controlSize)}px`;
+      // and we set the height of the control flow element
+      underControlDropZone.parentElement.style.height = `${30*(2+controlSize)}px`;
       // TODO move all existing children of dropzone up/down when updated
+}
+
+/**
+ * function that recursively updates children of dragged block to remove them from the control flow
+ * @param draggedBlock - the initial block being dragged out of the control flow
+ * @param controlLine - the control line class to remove from the children
+ */
+function updateChildrenControl(draggedBlock, controlLine) {
+  let currentblock = draggedBlock;
+  while(currentblock.lastChild.classList.contains('itemSidebar')){
+    currentblock = currentblock.lastChild;
+    currentblock.classList.remove(controlLine);
+    currentblock.classList.remove('flowBlock');
+  }
 }
