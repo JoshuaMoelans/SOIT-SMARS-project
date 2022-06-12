@@ -187,11 +187,24 @@ interact('.dropzone').dropzone({
    */
   ondragleave: function (event) {
     // TODO fix removing flow-in-flow nesting not properly updating the in-control class
+    //  references behaviour on repeat-in-repeat removal not resetting the dropzone the inner repeat was in as well
     // remove the drop feedback style
     let network = document.getElementById('network');
     let draggedBlock = document.getElementById(event.relatedTarget.id);
+    let getPosFromParent = false;
     if(event.target.parentElement === draggedBlock){
-      return
+      // in case we leave our own drop zone, we can return if we're not a control-flow block
+      // else we have to check if we are part of a dropzone or not, and then we can still update our parent's dropzone
+      if(draggedBlock.classList.contains("control-flow")){
+        if(draggedBlock.parentElement !== network){
+          let parentDropzone = $(`#dropzone-${draggedBlock.parentElement.id}`)[0];
+          parentDropzone.classList.remove('drop-target');
+          parentDropzone.classList.remove('dropzone-filled');
+          getPosFromParent = true;
+        }
+      }else{
+        return
+      }
     }
     event.target.classList.remove('drop-target')
     if(draggedBlock.parentElement !== network){
@@ -202,6 +215,9 @@ interact('.dropzone').dropzone({
       // tags: enhancement, front-end
       draggedBlock.style.transform = event.target.parentElement.style.transform
       positions[draggedBlock.id] = {...positions[event.target.parentElement.id]}
+      if(getPosFromParent){
+        positions[draggedBlock.id] = {...positions[draggedBlock.parentElement.id]}
+      }
       positions[draggedBlock.id].y += 50
       event.target.classList.remove('dropzone-filled')
       // if block was part of a control flow network, we up the dropzone again
@@ -270,9 +286,10 @@ interact('.dropzone').dropzone({
         let allClassNames = newParent.className.split(' ');
         for(let className of allClassNames){
           if(className.includes('in-control-')){
-            draggedBlock.classList.add("flowBlock")
+            draggedBlock.classList.add("flowBlock");
             draggedBlock.classList.add(className);
-            controlParentID.push(className.split('-')[2])
+            controlParentID.push(className.split('-')[2]);
+            updateChildrenControl(draggedBlock,className,false);
           }
         }
         lowerDropzone = true;
@@ -336,12 +353,24 @@ function updateChildrenControl(draggedBlock, controlLine,remove=true) {
     }
     if(remove){
       currentblock.classList.remove(controlLine);
-      currentblock.classList.remove('flowBlock');
+      // only remove flowBlock if block does not have other control line(s)
+      if(!hasControlLine(currentblock.classList)){
+        currentblock.classList.remove('flowBlock');
+      }
     }else{
       currentblock.classList.add(controlLine);
       currentblock.classList.add('flowBlock');
     }
   }
+}
+
+function hasControlLine(classList){
+  for(let classname of classList){
+    if(classname.includes('in-control')){
+      return true;
+    }
+  }
+  return false;
 }
 
 /**
