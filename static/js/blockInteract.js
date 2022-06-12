@@ -148,6 +148,7 @@ interact('.dropzone').dropzone({
   // only accept elements matching this CSS selector
   accept: '.can-drop',
   // Require a 15% element overlap for a drop to be possible
+  // TODO fix stretched control flow not having 0.15% overlap when enlarged
   overlap: 0.15,
 
   // listen for drop related events:

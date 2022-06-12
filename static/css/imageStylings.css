@@ -13,7 +13,7 @@
 .bin{
   position: absolute;
   bottom: 3%;
-  left: 12%;
+  left: 200px;
   width: 5%;
   pointer-events: none;
   margin-right: 10px;
@@ -22,7 +22,7 @@
 .undo{
   position: absolute;
   bottom: 3%;
-  left: 15%;
+  left: 250px;
   width: 2%;
   margin-right: 10px;
   margin-top: 10px;

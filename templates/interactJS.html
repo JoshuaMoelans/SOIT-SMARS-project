@@ -21,47 +21,75 @@
         <div class="container">
             <div class="blockBox">
                 <br>
+                <!-- Section: Events -->
                 <div class="secText">Events</div>
                 <div class="itemSidebar yellowBox">
                     <div class="blockText">Start</div>
                 </div>
+
                 <hr class="blockBR">
+
                 {# no-dropzone class used for blocks that have no dropzone#}
                 <div class="itemSidebar yellowBox can-drop no-dropzone">
                     <div class="blockText">End</div>
                 </div>
+
                 {# section breaks can be used for wider spacing between blocks #}
                 <hr class="secBR" />
+
                 {# and can have additional section Text #}
+                <!-- Section: Movement -->
                 <div class="secText">Movement</div>
+                <div class="itemSidebar greenBar can-drop">
+                    <div class="blockText">Start Forward</div>
+                </div>
+
+                <hr class="blockBR" />
+
                 {# can-drop class used for blocks that can be placed in dropzone#}
                 <div class="itemSidebar greenBar can-drop">
-                    <div class="blockText">Drive Forward</div>
+                    <div class="blockText">Start Backward</div>
                 </div>
+
                 <hr class="blockBR" />
-                {# can-drop class used for blocks that can be placed in dropzone#}
-                <div class="itemSidebar greenBar can-drop">
-                    <div class="blockText">Drive Backward</div>
-                </div>
-                <hr class="blockBR" />
+
                 {# can-drop class used for blocks that can be placed in dropzone#}
                 <div class="itemSidebar greenBar can-drop">
                     <div class="blockText">Stop both motors</div>
                 </div>
+
+                <hr class="blockBR" />
+
+                <div class="itemSidebar greenBar can-drop">
+                    <div class="blockText">Turn Right</div>
+                </div>
+
+                <hr class="blockBR" />
+
+                <div class="itemSidebar greenBar can-drop">
+                    <div class="blockText">Turn Left</div>
+                </div>
                 <hr class="secBR" />
+
+                <!-- Section: Input fields -->
                 <div class="secText">Input field</div>
                 {# input field for blocks that require additional input. Initially disabled  #}
                 <div class="itemSidebar orangeBar can-drop has-input">
                     <div class="blockText">Wait for sec<input oninput="this.value=this.value.slice(0,this.maxLength)" maxlength="3" type="number" id="delay" name="delay" placeholder="3" disabled>
                     </div>
                 </div>
+
                 <hr class="blockBR" />
+
                 {# input field for blocks that require additional input. Initially disabled  #}
                 <div class="itemSidebar orangeBar can-drop has-input">
                     <div class="blockText">Set speed to<input oninput="this.value=this.value.slice(0,this.maxLength)"  maxlength="3" type="number" id="speed" name="speed" placeholder="50" disabled>
                     </div>
                 </div>
+
                 <hr class="secBR"/>
+
+                <!-- Section: Control -->
                 <div class="secText">Control</div>
                 <div class="itemSidebar purpleBar can-drop control-flow has-input">
                     <div class="blockText">Repeat<input oninput="this.value=this.value.slice(0,this.maxLength)"  maxlength="3" type="number" id="repeat" name="repeat" placeholder="10" disabled></div>

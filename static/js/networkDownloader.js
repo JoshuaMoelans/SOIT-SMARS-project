@@ -81,10 +81,10 @@ function codeForBlock(block,flownetcode=""){
   switch (block.blockType) {
     case "Start":
       return ""
-    case "Drive Forward":
+    case "Start Forward":
       return "\tR_motor.run(FORWARD);\n" +
           "\tL_motor.run(FORWARD);\n"
-    case "Drive Backward":
+    case "Start Backward":
       return "\tR_motor.run(BACKWARD);\n" +
           "\tL_motor.run(BACKWARD);\n"
     case "Set speed to":
@@ -101,6 +101,16 @@ function codeForBlock(block,flownetcode=""){
       let repeat_times = block.param;
       let id = block.divID;
       return `\tfor(int i${id} = 0; i${id}<${repeat_times}; i${id}++){\n\n${flownetcode}\n\t}\n`;
+    case "Turn Right":
+      return "\tR_motor.run(RELEASE);\n" +
+          "\tL_motor.run(FORWARD);\n" +
+          "\tdelay(500);\n"+
+          "\tL_motor.run(RELEASE);\n"
+    case "Turn Left":
+      return "\tL_motor.run(RELEASE);\n" +
+          "\tR_motor.run(FORWARD);\n" +
+          "\tdelay(500);\n"+
+          "\tR_motor.run(RELEASE);\n"
     case "End":
       return "\tR_motor.run(RELEASE);\n" +
           "\tL_motor.run(RELEASE); \n"+
@@ -192,8 +202,8 @@ function generateFile(startBlockID){
   // necessary setup for any Arduino SMARS file
   fileContent = "#include <AFMotor.h>\n" +
       "\n" +
-      "AF_DCMotor R_motor(1);\n" +
-      "AF_DCMotor L_motor(2); \n\n" +
+      "AF_DCMotor R_motor(2);\n" +
+      "AF_DCMotor L_motor(1); \n\n" +
       "void setup() {\n" +
       "  R_motor.setSpeed(150);\n" +
       "  L_motor.setSpeed(150);\n" +
