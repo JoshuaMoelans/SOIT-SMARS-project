@@ -123,7 +123,7 @@ interact(".itemSidebar")
     }
     // we store items to the bin for retrieval, when deleting on accident
     let bin = document.getElementById("bin");
-    if(isCollide(bin,element)){
+    if(itemID && isCollide(bin,element)){
       trash.push(element);
       element.remove();
     }
@@ -327,8 +327,13 @@ function updateDropZone(controlFlowID){
  */
 function updateChildrenControl(draggedBlock, controlLine,remove=true) {
   let currentblock = draggedBlock;
-  while(currentblock.lastChild.classList.contains('itemSidebar')){
+  // weird while-structure because of 'End' block having invisible #text node as lastChild (which has no classList)
+  while(currentblock.lastChild.classList){
     currentblock = currentblock.lastChild;
+    // proper while-break check done after being sure classList exists
+    if(!currentblock.classList.contains('itemSidebar')){
+      break;
+    }
     if(remove){
       currentblock.classList.remove(controlLine);
       currentblock.classList.remove('flowBlock');
