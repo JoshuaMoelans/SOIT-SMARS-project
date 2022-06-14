@@ -77,8 +77,21 @@ function generateDate(){
   return outString
 }
 
+/**
+ * generates code for a given block, based on the blockType (=blockText given in the html)
+ * @param block - the block to generate code for
+ * @param flownetcode - additional flow-network code for control-flow type blocks
+ * @returns {string} the (Arduino) code for the given block
+ */
 function codeForBlock(block,flownetcode=""){
   switch (block.blockType) {
+    // first cases for our demo.html sheet
+    case "BLOCK":
+      return  "\t// my code here";
+    case "Output value":
+      let paramVal = block.param;
+      return `\t// outputting value ${paramVal}`;
+    // cases for the actual robot
     case "Start":
       return ""
     case "Start Forward":
@@ -124,7 +137,7 @@ function codeForBlock(block,flownetcode=""){
   a list of all blocks which are expected to have parameters
   TODO document this well!!!
  */
-let ParamBlocks = ['Set speed to','Wait for sec']
+let ParamBlocks = ['Set speed to','Wait for sec','Output value']
 let ControlBlocks = ['Repeat']
 function generateNetwork(startBlockID, inflow = false){
   let network = []

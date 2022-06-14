@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SOIT-SMARS Project DEMO</title>
+    <link rel="stylesheet" href="../static/css/interactStylesheet.css"/>
+    <link rel="stylesheet" href="../static/css/alerts.css"/>
+    <link rel="stylesheet" href="../static/css/imageStylings.css"/>
+    <link rel="shortcut icon" href="../static/Images/Hujo-Smars-icon.png">
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="../static/js/blockInteract.js"></script>
+    {#    including fonts    #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Red+Hat+Mono:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+    <img src="../static/Images/Hujo_Logo.png" alt="Hujo logo" class="cornerLogo imgShadow"/>
+    <div class="blockBoxBar">
+        <div class="container">
+            <div class="blockBox">
+                <br>
+                <div class="secText">SECTION</div>
+                <div class="itemSidebar yellowBar can-drop">
+                    <div class="blockText">BLOCK</div>
+                </div>
+
+                <hr class="blockBR"/>
+
+                <div class="itemSidebar yellowBox">
+                    <div class="blockText">Start</div>
+                </div>
+
+                <hr class="blockBR" />
+
+                <div class="itemSidebar orangeBar can-drop has-input">
+                    <div class="blockText">Output value<input oninput="this.value=this.value.slice(0,this.maxLength)" maxlength="3" type="number" placeholder="3" disabled>
+                    </div>
+                </div>
+
+                <hr class="blockBR"/>
+                <div class="itemSidebar purpleBar can-drop control-flow has-input">
+                    <div class="blockText">Repeat<input oninput="this.value=this.value.slice(0,this.maxLength)"  maxlength="3" type="number" id="repeat" name="repeat" placeholder="10" disabled></div>
+                </div>
+            </div>
+            <div class="networkField" id="network">
+                {#blocks dynamically get added here#}
+            </div>
+        </div>
+    </div>
+
+   <img class="bottomCornerLogo imgShadow" src="../static/Images/Download-icon.png" alt="Download Icon"
+        onclick="downloadNetwork()">
+
+    <img id="bin" class="bin imgShadow" src="../static/Images/bin.png" alt="trashbin to remove blocks">
+    {#    <a href="https://www.flaticon.com/free-icons/trash" title="trash icons">Trash icons created by Freepik - Flaticon</a>#}
+    <img id="undo" class="undo imgShadow" src="../static/Images/undo.png" onclick="restoreTrash()" alt="undo button">
+
+    <div class="alert hidden" id="alert">
+        <span class="closebtn" id="alertClose" onclick="this.parentElement.classList.add('hidden'); this.style.pointerEvents='none'">&times;</span>
+            <div id="alertbox">
+
+            </div>
+    </div>
+    <script src="../static/js/networkDownloader.js"></script>
+</body>
+</html>
