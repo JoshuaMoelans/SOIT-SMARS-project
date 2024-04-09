@@ -5,7 +5,7 @@ Project available [via GitHub](https://github.com/JoshuaMoelans/SOIT-SMARS-proje
 
 Under supervision of Teaching Assistant [Brent van Bladel](https://www.uantwerpen.be/nl/personeel/brent-vanbladel/)
 
-**The app is currently being hosted on Replit and can be accessed [via this link](https://soit-smars-project.joshuamoelans.repl.co/)**
+**The app is currently hosted online and can be accessed [via this link](https://soit-smars-project.vercel.app/)**
 
 ***
 Hujo volunteers who are providing additional help and advice:
